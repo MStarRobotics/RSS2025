@@ -1,1 +1,689 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robotic Security Trends: A 2025 Blueprint</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Plotly.js CDN for 3D charts, ensuring WebGL support -->
+    <script src="https://cdn.jsdelivr.net/npm/plotly.js/dist/plotly.min.js"></script> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(to bottom right, #f0f9ff, #dcf5ff, #c5eeff); /* Softer, lighter blues for depth */
+            min-height: 100vh;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        /* Specific container for Plotly charts to ensure responsiveness with fixed aspect ratio if needed */
+        .plotly-chart-container {
+            width: 100%;
+            max-width: 800px; /* Wider for 3D plots */
+            height: 500px; /* Fixed height for 3D Plotly to avoid distortion */
+            margin-left: auto;
+            margin-right: auto;
+            border-radius: 0.75rem; /* rounded-xl */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
+            overflow: hidden; /* Important for Plotly to render correctly within bounds */
+        }
+        @media (min-width: 1024px) {
+            .plotly-chart-container {
+                height: 600px; /* Taller on larger screens */
+            }
+        }
 
+        .flow-line {
+            position: relative;
+            background-color: #0077B6; /* Medium Blue for lines */
+            width: 3px; /* Slightly thicker */
+            height: 3rem;
+        }
+        .flow-line::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid #0077B6;
+        }
+        .flow-line-h {
+            position: absolute;
+            top: 50%;
+            left: 100%;
+            height: 3px; /* Slightly thicker */
+            width: 2rem;
+            background-color: #0077B6;
+        }
+        .flow-line-h::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-top: 6px solid transparent;
+            border-bottom: 6px solid transparent;
+            border-left: 8px solid #0077B6;
+        }
+        .nav-link.active {
+            color: #004AAD;
+            font-weight: 700;
+            border-bottom: 2px solid #004AAD;
+        }
+        #scroll-progress {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background-color: #0077B6;
+            width: 0%;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body class="text-gray-800">
+
+    <!-- 
+    Palette Selection: "Brilliant Blues" (#004AAD, #0077B6, #90E0EF, #CAF0F8)
+    Narrative Plan: Start with high-level capabilities, then drill down into architecture, technology stack, best practices, and ethical considerations to tell a comprehensive story based on the source report.
+    Visualization Plan:
+    1. Core Capabilities -> Goal: Inform -> Visualization: Pictograph/Icon Chart (HTML/Unicode) -> Justification: Quickly convey abstract concepts.
+    2. System Architecture -> Goal: Organize -> Visualization: Flow Chart (HTML/CSS) -> Justification: Clearly show modular relationships.
+    3. Tech Stack Focus -> Goal: Compare -> Visualization: Radar Chart (Chart.js/Canvas) -> Justification: Show multi-dimensional priorities.
+    4. Language Usage -> Goal: Compare -> Visualization: Bar Chart (Chart.js/Canvas) -> Justification: Direct comparison of categorical data.
+    5. Market Size Growth -> Goal: Change -> Visualization: Line Chart (Chart.js/Canvas) -> Justification: Show trends over time.
+    6. Strategic Initiative Impact -> Goal: Relationships -> Visualization: 3D Scatter Plot (Plotly.js/WebGL) -> Justification: Show correlation between three continuous variables.
+    7. Ethical Principles -> Goal: Inform -> Visualization: Pictograph/Icon Chart (HTML/Unicode) -> Justification: Emphasize key principles visually.
+    Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All diagrams are HTML/CSS, and all charts are rendered on Canvas by Chart.js or WebGL by Plotly.js.
+    -->
+
+    <div id="scroll-progress"></div>
+
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center max-w-6xl">
+            <h1 class="font-bold text-xl text-[#004AAD]">Robotic Security 2025</h1>
+            <div class="hidden md:flex space-x-6 text-sm">
+                <a href="#capabilities" class="nav-link text-gray-600 hover:text-[#004AAD] py-1">Capabilities</a>
+                <a href="#architecture" class="nav-link text-gray-600 hover:text-[#004AAD] py-1">Architecture</a>
+                <a href="#tech" class="nav-link text-gray-600 hover:text-[#004AAD] py-1">Technology</a>
+                <a href="#market-outlook" class="nav-link text-gray-600 hover:text-[#004AAD] py-1">Market Outlook</a>
+                <a href="#practices" class="nav-link text-gray-600 hover:text-[#004AAD] py-1">Practices</a>
+                <a href="#ethics" class="nav-link text-gray-600 hover:text-[#004AAD] py-1">Ethics</a>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container mx-auto px-6 py-8 md:py-12 max-w-6xl">
+
+        <section id="hero" class="text-center mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <h2 class="text-4xl md:text-6xl font-black text-[#004AAD] leading-tight">The Future of Security is Autonomous</h2>
+            <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">A blueprint for the next generation of robotic security systems, combining intelligent automation with production-grade engineering for 2025 and beyond.</p>
+            <div class="mt-12 bg-white rounded-xl shadow-lg p-8 inline-flex items-center space-x-4 border border-gray-200 transition-all duration-300 hover:shadow-xl hover:scale-105">
+                <span class="text-6xl font-bold text-[#0077B6]">95%</span>
+                <span class="text-left text-gray-700 font-semibold">of repetitive security tasks are projected<br>to be automated by intelligent systems.</span>
+            </div>
+        </section>
+
+        <section id="capabilities" class="mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <div class="text-center mb-12 flex flex-col items-center">
+                <h3 class="text-3xl font-bold text-[#004AAD]">Core Capabilities of the 2025 Security Robot</h3>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto leading-relaxed">Modern systems are designed for comprehensive, autonomous operation, moving far beyond simple monitoring to become proactive security agents.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white rounded-xl shadow-md p-6 text-center border-l-4 border-[#0077B6] hover:shadow-xl transition-all duration-300 hover:scale-103">
+                    <span class="text-5xl">👁️</span>
+                    <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Proactive Monitoring</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Continuously analyzes rich data from visual, thermal, and event-based sensors to understand the environment in real-time.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 text-center border-l-4 border-[#0077B6] hover:shadow-xl transition-all duration-300 hover:scale-103">
+                    <span class="text-5xl">🧠</span>
+                    <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Intelligent Detection</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Uses advanced Edge AI to accurately identify anomalies, predict threats, and minimize false positives without cloud latency.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 text-center border-l-4 border-[#0077B6] hover:shadow-xl transition-all duration-300 hover:scale-103">
+                    <span class="text-5xl">🗺️</span>
+                    <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Adaptive Navigation</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Navigates complex, dynamic environments autonomously using advanced SLAM and VIO for precise localization and obstacle avoidance.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 text-center border-l-4 border-[#0077B6] hover:shadow-xl transition-all duration-300 hover:scale-103">
+                    <span class="text-5xl">🛡️</span>
+                    <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Secure Communication</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Maintains resilient, encrypted communication channels through redundant systems (5G, Wi-Fi 6, LoRa) under a Zero-Trust model.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 text-center border-l-4 border-[#0077B6] hover:shadow-xl transition-all duration-300 hover:scale-103">
+                    <span class="text-5xl">⚙️</span>
+                    <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Self-Healing & Optimizing</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Implements mechanisms for self-diagnosis, fault recovery, and continuous performance tuning via MLOps and remote OTA updates.</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 text-center border-l-4 border-[#0077B6] hover:shadow-xl transition-all duration-300 hover:scale-103">
+                    <span class="text-5xl">🤖</span>
+                    <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Fleet Coordination</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Collaborates with other robotic units for synchronized patrolling, cooperative mapping, and shared threat localization to maximize coverage.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="architecture" class="mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <div class="text-center mb-12 flex flex-col items-center">
+                <h3 class="text-3xl font-bold text-[#004AAD]">System Architecture: A Modular Approach</h3>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto leading-relaxed">A production-grade system is built on modular, independently deployable components. This structure ensures maintainability, scalability, and robustness. The diagram below illustrates the flow from hardware interaction to intelligent action.</p>
+            </div>
+            <div class="flex flex-col items-center space-y-4">
+                <div class="bg-white rounded-xl shadow-md p-4 w-full md:w-3/4 lg:w-1/2 text-center border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h5 class="font-bold text-lg text-[#004AAD]">Intelligence & Decision Making <br><span class="font-normal text-sm text-gray-500">(The Brain)</span></h5>
+                    <p class="text-xs text-gray-600">Behavior Trees, XAI, Reinforcement Learning</p>
+                </div>
+                <div class="flow-line"></div>
+                <div class="bg-white rounded-xl shadow-md p-4 w-full md:w-3/4 lg:w-1/2 text-center border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h5 class="font-bold text-lg text-[#004AAD]">Perception & Vision <br><span class="font-normal text-sm text-gray-500">(The Senses)</span></h5>
+                    <p class="text-xs text-gray-600">Multi-Sensor Fusion, Edge AI, Anomaly Detection</p>
+                </div>
+                <div class="flow-line"></div>
+                <div class="bg-white rounded-xl shadow-md p-4 w-full md:w-3/4 lg:w-1/2 text-center border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h5 class="font-bold text-lg text-[#004AAD]">Navigation & Mobility <br><span class="font-normal text-sm text-gray-500">(The Body)</span></h5>
+                    <p class="text-xs text-gray-600">SLAM/VIO, Path Planning, Fleet Coordination</p>
+                </div>
+                <div class="flow-line"></div>
+                <div class="bg-white rounded-xl shadow-md p-4 w-full md:w-3/4 lg:w-1/2 text-center border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h5 class="font-bold text-lg text-[#004AAD]">Hardware Abstraction Layer <br><span class="font-normal text-sm text-gray-500">(HAL)</span></h5>
+                    <p class="text-xs text-gray-600">Sensor/Motor Drivers, Power Management</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="tech" class="mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <div class="text-center mb-12 flex flex-col items-center">
+                <h3 class="text-3xl font-bold text-[#004AAD]">The 2025 Technology Stack</h3>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto leading-relaxed">Selecting the right tools is critical. The ideal stack prioritizes real-time performance, security, and a robust ecosystem for development and deployment.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="text-xl font-bold text-center text-[#004AAD] mb-4">Development Focus Areas</h4>
+                    <p class="text-sm text-gray-600 text-center mb-4 leading-snug">This radar chart visualizes the relative importance of key technology domains in a modern robotics project. A balanced focus across all areas is essential for creating a robust and intelligent system.</p>
+                    <div class="chart-container">
+                        <canvas id="techFocusChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="text-xl font-bold text-center text-[#004AAD] mb-4">Primary Language Distribution</h4>
+                     <p class="text-sm text-gray-600 text-center mb-4 leading-snug">While both C++ and Python are vital, their roles are distinct. C++ is essential for high-performance, real-time tasks, whereas Python excels in AI development and high-level logic.</p>
+                    <div class="chart-container h-80 md:h-96">
+                        <canvas id="languageChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="market-outlook" class="mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <div class="text-center mb-12">
+                <h3 class="text-3xl font-bold text-[#004AAD]">Market Projections & Strategic Insights</h3>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto leading-relaxed">Understanding the market trajectory and the impact of key investments is crucial for long-term strategic planning in robotic security.</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="text-xl font-bold text-center text-[#004AAD] mb-4">Robotic Security Market Size Growth</h4>
+                    <p class="text-sm text-gray-600 text-center mb-4 leading-snug">Projected growth of the global robotic security market, illustrating a steady upward trend driven by increasing automation and demand for enhanced surveillance capabilities.</p>
+                    <div class="chart-container h-96">
+                        <canvas id="marketGrowthChart"></canvas>
+                    </div>
+                </div>
+                <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="text-xl font-bold text-center text-[#004AAD] mb-4">Strategic Initiative Impact: Investment vs. Adoption vs. Market Impact</h4>
+                    <p class="text-sm text-gray-600 text-center mb-4 leading-snug">This 3D scatter plot highlights how different strategic initiatives (represented by individual points) correlate across investment levels, market adoption rates, and overall market impact. Higher investment and adoption generally lead to greater market impact, but key innovators can achieve high impact with lower investment.</p>
+                    <div id="strategicImpactPlot" class="plotly-chart-container"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="practices" class="mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <div class="text-center mb-12 flex flex-col items-center">
+                <h3 class="text-3xl font-bold text-[#004AAD]">Production-Ready Best Practices</h3>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto leading-relaxed">Moving from prototype to production requires a disciplined approach to engineering, security, and operations.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8">
+                <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="font-bold text-[#004AAD] mb-2">Advanced CI/CD & GitOps</h4>
+                    <p class="text-sm text-gray-600 leading-snug">Automate every step from code commit to over-the-air (OTA) deployment. Use Git as the single source of truth for both code and configuration, ensuring reproducible and reliable fleet updates.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="font-bold text-[#004AAD] mb-2">Comprehensive Simulation</h4>
+                    <p class="text-sm text-gray-600 leading-snug">Extensively use realistic simulators like Isaac Sim or Gazebo to test navigation, perception, and complex behaviors in thousands of scenarios before deploying to physical hardware.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="font-bold text-[#004AAD] mb-2">Zero-Trust Security</h4>
+                    <p class="text-sm text-gray-600 leading-snug">Assume no implicit trust. Every device, user, and application must be authenticated and authorized. Utilize micro-segmentation, hardware-level security (TPMs), and end-to-end encryption.</p>
+                </div>
+                 <div class="bg-white p-6 rounded-xl shadow-md border-l-4 border-[#0077B6] transition-all duration-300 hover:shadow-xl hover:scale-103">
+                    <h4 class="font-bold text-[#004AAD] mb-2">Full-Stack Observability</h4>
+                    <p class="mt-2 text-sm text-gray-600 leading-snug">Implement comprehensive monitoring with centralized logging, metrics (Prometheus/Grafana), and distributed tracing to gain deep insights into system performance and health, enabling proactive maintenance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="ethics" class="mb-20 opacity-0 transform translate-y-8 transition-all duration-700 ease-out">
+            <div class="text-center mb-12 flex flex-col items-center">
+                <h3 class="text-3xl font-bold text-[#004AAD]">Ethical, Legal, and Privacy by Design</h3>
+                <p class="mt-2 text-gray-600 max-w-2xl mx-auto leading-relaxed">For 2025, public acceptance and regulatory compliance are paramount. Ethical considerations must be integrated from the very first line of code.</p>
+            </div>
+            <div class="bg-white rounded-xl shadow-lg p-8 border-l-4 border-[#0077B6]">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+                    <div>
+                        <span class="text-5xl">⚖️</span>
+                        <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Transparency & XAI</h4>
+                        <p class="mt-2 text-sm text-gray-600 leading-snug">Incorporate Explainable AI (XAI) to ensure that the robot's decisions are interpretable and auditable, building trust and accountability.</p>
+                    </div>
+                    <div>
+                        <span class="text-5xl">🛡️</span>
+                        <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Fairness & Bias Mitigation</h4>
+                        <p class="mt-2 text-sm text-gray-600 leading-snug">Actively audit training data and models to identify and eliminate biases that could lead to discriminatory or unfair outcomes across different demographics.</p>
+                    </div>
+                    <div>
+                        <span class="text-5xl">🔒</span>
+                        <h4 class="text-xl font-bold mt-4 text-[#004AAD]">Privacy by Design</h4>
+                        <p class="mt-2 text-sm text-gray-600 leading-snug">Adhere to strict data minimization principles. Collect only what is necessary, use anonymization, and enforce strong encryption and access controls.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#004AAD] text-white py-6">
+        <div class="container mx-auto px-6 text-center text-sm">
+            <p>&copy; 2025 Robotic Systems Research. All rights reserved.</p>
+            <p class="opacity-75 mt-1">This infographic is based on the 2025 Production-Ready Robotic Security System Guide.</p>
+        </div>
+    </footer>
+
+    <button id="backToTopBtn" class="fixed bottom-6 right-6 bg-[#0077B6] text-white p-3 rounded-full shadow-lg hover:bg-[#004AAD] transition-all duration-300 opacity-0 transform translate-y-4 pointer-events-none">
+        ⬆️
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initial animation for all sections
+            const animatedSections = document.querySelectorAll('main section');
+            animatedSections.forEach((section, index) => {
+                setTimeout(() => {
+                    section.classList.remove('opacity-0', 'translate-y-8');
+                }, 100 * (index + 1)); // Staggered animation
+            });
+
+            const tooltipTitleCallback = (tooltipItems) => {
+                const item = tooltipItems[0];
+                let label = item.chart.data.labels[item.dataIndex];
+                if (Array.isArray(label)) {
+                    return label.join(' ');
+                }
+                return label;
+            };
+
+            const wrapLabel = (label, maxWidth) => {
+                if (label.length <= maxWidth) {
+                    return label;
+                }
+                const words = label.split(' ');
+                const lines = [];
+                let currentLine = '';
+                words.forEach(word => {
+                    if ((currentLine + ' ' + word).trim().length > maxWidth && currentLine.length > 0) {
+                        lines.push(currentLine);
+                        currentLine = word;
+                    } else {
+                        currentLine = (currentLine + ' ' + word).trim();
+                    }
+                });
+                if (currentLine.length > 0) {
+                    lines.push(currentLine);
+                }
+                return lines;
+            };
+
+            const techFocusCtx = document.getElementById('techFocusChart').getContext('2d');
+            new Chart(techFocusCtx, {
+                type: 'radar',
+                data: {
+                    labels: ['Edge AI', 'Real-Time Control', 'Zero-Trust Security', 'MLOps', 'Simulation', 'Data Fusion'],
+                    datasets: [{
+                        label: 'Focus Level',
+                        data: [9, 8, 9, 7, 8, 7],
+                        fill: true,
+                        backgroundColor: 'rgba(0, 119, 182, 0.2)',
+                        borderColor: '#0077B6',
+                        pointBackgroundColor: '#0077B6',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#0077B6'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: {
+                            borderWidth: 2
+                        }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e5e7eb' },
+                            grid: { color: '#e5e7eb' },
+                            pointLabels: { font: { size: 12, family: 'Inter' }, color: '#4b5563' },
+                            ticks: {
+                                backdropColor: '#f8fafc',
+                                color: '#6b7280',
+                                stepSize: 2,
+                                font: { family: 'Inter' }
+                            },
+                            suggestedMin: 0,
+                            suggestedMax: 10
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            },
+                            bodyFont: { family: 'Inter' },
+                            titleFont: { family: 'Inter', weight: 'bold' },
+                            backgroundColor: 'rgba(0, 74, 173, 0.9)', // #004AAD with opacity
+                            borderColor: '#004AAD',
+                            borderWidth: 1,
+                            cornerRadius: 6,
+                        }
+                    }
+                }
+            });
+
+            const languageCtx = document.getElementById('languageChart').getContext('2d');
+            const rawLabels = ['Performance-Critical Components (Real-Time, HAL, Navigation)', 'High-Level Logic & AI/ML Development'];
+            const wrappedLabels = rawLabels.map(label => wrapLabel(label, 16));
+
+            new Chart(languageCtx, {
+                type: 'bar',
+                data: {
+                    labels: wrappedLabels,
+                    datasets: [{
+                        label: 'C++',
+                        data: [70, 10],
+                        backgroundColor: '#004AAD',
+                        borderColor: '#003c8f',
+                        borderWidth: 1
+                    }, {
+                        label: 'Python',
+                        data: [30, 90],
+                        backgroundColor: '#90E0EF',
+                        borderColor: '#7acde0',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            stacked: true,
+                            ticks: {
+                                callback: function(value) { return value + "%" },
+                                font: { family: 'Inter' },
+                                color: '#4b5563'
+                            },
+                            grid: { display: false }
+                        },
+                        y: {
+                            stacked: true,
+                            grid: { display: false },
+                            ticks: {
+                                font: { family: 'Inter' },
+                                color: '#4b5563'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Inter' },
+                                color: '#4b5563'
+                            }
+                        },
+                        title: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            },
+                            bodyFont: { family: 'Inter' },
+                            titleFont: { family: 'Inter', weight: 'bold' },
+                            backgroundColor: 'rgba(0, 74, 173, 0.9)', // #004AAD with opacity
+                            borderColor: '#004AAD',
+                            borderWidth: 1,
+                            cornerRadius: 6,
+                        }
+                    }
+                }
+            });
+
+            // Market Growth Line Chart
+            const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+            new Chart(marketGrowthCtx, {
+                type: 'line',
+                data: {
+                    labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029'],
+                    datasets: [{
+                        label: 'Market Size (Billion USD)',
+                        data: [15.2, 18.5, 22.3, 27.0, 32.8, 39.5, 47.7],
+                        fill: true,
+                        backgroundColor: 'rgba(144, 224, 239, 0.3)', // #90E0EF with opacity
+                        borderColor: '#0077B6',
+                        tension: 0.4,
+                        pointBackgroundColor: '#004AAD',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#004AAD',
+                        pointRadius: 5,
+                        pointHoverRadius: 7
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: {
+                            ticks: { font: { family: 'Inter' }, color: '#4b5563' },
+                            grid: { color: '#e5e7eb' }
+                        },
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                callback: function(value) { return '$' + value + 'B'; },
+                                font: { family: 'Inter' },
+                                color: '#4b5563'
+                            },
+                            grid: { color: '#e5e7eb' }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback
+                            },
+                            bodyFont: { family: 'Inter' },
+                            titleFont: { family: 'Inter', weight: 'bold' },
+                            backgroundColor: 'rgba(0, 74, 173, 0.9)',
+                            borderColor: '#004AAD',
+                            borderWidth: 1,
+                            cornerRadius: 6,
+                        }
+                    }
+                }
+            });
+
+            // Plotly 3D Scatter Plot
+            const strategicImpactData = [{
+                x: [2.0, 3.5, 1.8, 4.0, 2.5, 5.0, 3.0, 4.5], // Investment (Billion USD)
+                y: [30, 60, 25, 75, 40, 85, 50, 70], // Adoption Rate (%)
+                z: [4, 7, 3, 9, 5, 10, 6, 8], // Market Impact (Score 1-10)
+                mode: 'markers',
+                type: 'scatter3d',
+                marker: {
+                    size: 8,
+                    color: [4, 7, 3, 9, 5, 10, 6, 8], // Color by Market Impact
+                    colorscale: [['0', '#CAF0F8'], ['0.5', '#90E0EF'], ['1', '#0077B6']], // Brilliant Blues gradient
+                    colorbar: {
+                        title: 'Impact Score',
+                        x: 0.9,
+                        len: 0.7,
+                        thickness: 10,
+                        titlefont: { family: 'Inter', size: 12 },
+                        tickfont: { family: 'Inter', size: 10 }
+                    },
+                    line: {
+                        color: 'rgba(0,0,0,0)',
+                        width: 0
+                    },
+                    opacity: 0.8
+                },
+                hoverinfo: 'text',
+                text: [
+                    'Emerging AI Vision: Investment $2.0B, Adoption 30%, Impact 4',
+                    'Advanced SLAM & Navigation: Investment $3.5B, Adoption 60%, Impact 7',
+                    'Basic Surveillance Bots: Investment $1.8B, Adoption 25%, Impact 3',
+                    'Integrated Fleet Management: Investment $4.0B, Adoption 75%, Impact 9',
+                    'Customizable Sensor Modules: Investment $2.5B, Adoption 40%, Impact 5',
+                    'Ethical AI & Compliance Systems: Investment $5.0B, Adoption 85%, Impact 10',
+                    'Drone Integration: Investment $3.0B, Adoption 50%, Impact 6',
+                    'Predictive Analytics Platform: Investment $4.5B, Adoption 70%, Impact 8'
+                ]
+            }];
+
+            const strategicImpactLayout = {
+                scene: {
+                    xaxis: {
+                        title: 'Investment (Billion USD)',
+                        backgroundcolor: "#f8fafc",
+                        gridcolor: "#e5e7eb",
+                        showbackground: true,
+                        zerolinecolor: "#e5e7eb",
+                        titlefont: { family: 'Inter', size: 12 },
+                        tickfont: { family: 'Inter', size: 10 }
+                    },
+                    yaxis: {
+                        title: 'Adoption Rate (%)',
+                        backgroundcolor: "#f8fafc",
+                        gridcolor: "#e5e7eb",
+                        showbackground: true,
+                        zerolinecolor: "#e5e7eb",
+                        titlefont: { family: 'Inter', size: 12 },
+                        tickfont: { family: 'Inter', size: 10 }
+                    },
+                    zaxis: {
+                        title: 'Market Impact (Score)',
+                        backgroundcolor: "#f8fafc",
+                        gridcolor: "#e5e7eb",
+                        showbackground: true,
+                        zerolinecolor: "#e5e7eb",
+                        titlefont: { family: 'Inter', size: 12 },
+                        tickfont: { family: 'Inter', size: 10 }
+                    },
+                    camera: {
+                        eye: {x: 1.5, y: 1.5, z: 1.25} // Adjust camera angle for better initial view
+                    }
+                },
+                margin: {
+                    l: 0, r: 0, b: 0, t: 0
+                },
+                paper_bgcolor: 'transparent', // Make background transparent to show parent div's style
+                plot_bgcolor: 'transparent',
+                font: { family: 'Inter', color: '#4b5563' },
+                hovermode: 'closest',
+                showlegend: false
+            };
+
+            Plotly.newPlot('strategicImpactPlot', strategicImpactData, strategicImpactLayout, {
+                responsive: true,
+                displayModeBar: false, // Hide Plotly's default modebar
+                modeBarButtonsToRemove: ['zoom3d', 'pan3d', 'orbitRotation', 'tableRotation', 'resetCameraLastSave3d', 'hoverClosest3d'], // Remove unnecessary buttons
+                staticPlot: false, // Allow interaction
+                webgl: true // Explicitly request WebGL rendering
+            });
+
+            // Navigation highlighting logic
+            const sections = document.querySelectorAll('main section[id]');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const backToTopBtn = document.getElementById('backToTopBtn');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-50% 0px -50% 0px', 
+                threshold: 0 
+            };
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        navLinks.forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        const currentNavLink = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+                        if (currentNavLink) {
+                            currentNavLink.classList.add('active');
+                        }
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+            // Scroll progress bar logic
+            const scrollProgress = document.getElementById('scroll-progress');
+            window.addEventListener('scroll', () => {
+                const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const scrollPosition = window.scrollY;
+                const progress = (scrollPosition / totalHeight) * 100;
+                scrollProgress.style.width = progress + '%';
+
+                // Back to top button visibility
+                if (scrollPosition > 300) { 
+                    backToTopBtn.classList.remove('opacity-0', 'translate-y-4', 'pointer-events-none');
+                    backToTopBtn.classList.add('opacity-100', 'translate-y-0');
+                } else {
+                    backToTopBtn.classList.remove('opacity-100', 'translate-y-0');
+                    backToTopBtn.classList.add('opacity-0', 'translate-y-4', 'pointer-events-none');
+                }
+            });
+
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>
