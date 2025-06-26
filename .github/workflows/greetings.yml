@@ -1,0 +1,142 @@
+name: Futuristic Greetings & Onboarding
+
+on:
+  issues:
+    types: [opened]
+  pull_request_target:
+    types: [opened]
+
+jobs:
+  greet:
+    runs-on: ubuntu-latest
+    steps:
+      - name: 'Detect User Locale'
+        id: locale
+        run: |
+          # Simulated locale detection (extend for real use)
+          echo "LOCALE=en" >> $GITHUB_ENV
+
+      - name: 'Recognize Milestone Contribution'
+        id: milestone
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const username = context.payload.sender.login;
+            const type = context.eventName === 'issues' ? 'issues' : 'prs';
+            const res = await github.rest.search.issuesAndPullRequests({
+              q: `repo:${context.repo.owner}/${context.repo.repo} author:${username} type:${type}`
+            });
+            const count = res.data.total_count + 1;
+            let milestone = '';
+            if (count === 1) milestone = ':1st_place_medal: First!';
+            else if (count === 5) milestone = ':medal_sports: Fifth!';
+            else if (count === 10) milestone = ':trophy: Tenth!';
+            core.setOutput('milestone', milestone);
+
+      - name: 'Auto Label First Timers'
+        if: github.event.pull_request && steps.milestone.outputs.milestone == ':1st_place_medal: First!'
+        uses: actions-ecosystem/action-add-labels@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          labels: 'first-timer'
+
+      - name: 'Greet Contributor'
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const username = context.payload.sender.login;
+            const isPR = !!context.payload.pull_request;
+            const locale = process.env.LOCALE || 'en';
+            const milestone = core.getInput('milestone') || '';
+            const docsLink = 'https://github.com/MStarRobotics/RSS2025/wiki';
+            const contribGuide = 'https://github.com/MStarRobotics/RSS2025/blob/main/CONTRIBUTING.md';
+            const secPolicy = 'https://github.com/MStarRobotics/RSS2025/security/policy';
+            const roadmap = 'https://github.com/MStarRobotics/RSS2025/projects/1';
+            const leaderboard = 'https://github.com/MStarRobotics/RSS2025/graphs/contributors';
+            const latestRelease = 'https://github.com/MStarRobotics/RSS2025/releases/latest';
+            const aiGuide = 'https://github.com/MStarRobotics/RSS2025/wiki/AI-ML-Modules';
+            const accessibilityGuide = 'https://www.w3.org/WAI/test-evaluate/';
+            const inclusiveLang = 'https://inclusivenaming.org/language-guide/';
+            const feedbackForm = 'https://github.com/MStarRobotics/RSS2025/discussions/categories/feedback';
+            const discord = 'https://discord.gg/your-invite';
+            const onboarding = 'https://github.com/MStarRobotics/RSS2025/wiki/Onboarding';
+            const videoGuide = 'https://youtu.be/your-video-link';
+            const asciiArt = [
+              "    ____   ____   ____",
+              "  / ___| |  _ \\ |  _ \\",
+              " | |     | |_) || |_) |",
+              " | |___  |  _ < |  __/",
+              "  \\____| |_| \\_\\|_|",
+              "        RSS2025"
+            ].join('\n');
+            const badge = isPR ? "🦾" : "🤖";
+            const aiFunFact = "Did you know? RSS2025 leverages both edge and cloud AI for real-time threat detection!";
+            const openIssues = 'https://github.com/MStarRobotics/RSS2025/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22';
+            const gamification = "Earn badges for each awesome contribution! [Leaderboard](" + leaderboard + ")";
+            const upcomingEvent = "🗓️ Next community call: July 10, 2025 (see Discord).";
+            const secScan = "🔒 Automated security scans run on every PR. See [Security Policy](" + secPolicy + ")";
+            const thankYouGIFs = [
+              "![Thank You](https://media.giphy.com/media/26ufdipQqU2lhNA4g/giphy.gif)",
+              "![Robot Thanks](https://media.giphy.com/media/3o6Mba8jZk2l3rblcA/giphy.gif)",
+              "![AI Cheers](https://media.giphy.com/media/xT0GqzxH8nBcGQ1Uxy/giphy.gif)"
+            ];
+            const randomGIF = thankYouGIFs[Math.floor(Math.random() * thankYouGIFs.length)];
+
+            let message = `
+${asciiArt}
+
+${milestone ? "**" + milestone + "** " : ""}${badge} Welcome @${username} to **RSS2025: Robotic Security System for the Future!**
+
+${isPR ? `
+Thank you for your pull request. :rocket:  
+- Please review our [Contribution Guide](${contribGuide}) and [AI/ML Modules](${aiGuide}).
+- Ensure code quality: run linters and [tests](${contribGuide}#testing).
+- If updating docs, check our [Doc Standards](${docsLink}/Documentation-Standards).
+- ${aiFunFact}
+- ${secScan}
+- ${gamification}
+- ${randomGIF}
+- [Join our Discord](${discord}) for live support or mentorship.
+- ${upcomingEvent}
+- Need ideas to contribute? See [open issues](${openIssues}) or our [Roadmap](${roadmap}).
+- Stay inclusive! See our [Accessibility](${accessibilityGuide}) and [Inclusive Language Guide](${inclusiveLang}).
+- Feedback or suggestions? [Share here](${feedbackForm}).
+
+🚦 **CI/CD status will be posted below.**
+
+` : `
+Thank you for raising this issue. :satellite:  
+- Please describe your request or bug clearly.
+- For security issues, see our [Security Policy](${secPolicy}).
+- New here? See our [Onboarding Guide](${onboarding}) and [Video Walkthrough](${videoGuide}).
+- Want to help? Check [help-wanted issues](${openIssues}).
+- ${aiFunFact}
+- ${gamification}
+- ${randomGIF}
+- [Join our Discord](${discord}) and our next [community call](${discord}).
+- Stay inclusive! [Accessibility](${accessibilityGuide}), [Inclusive Language](${inclusiveLang}).
+- Feedback welcome: [Form](${feedbackForm}).
+
+`}
+
+🌟 [Latest Release](${latestRelease}) | [Public Roadmap](${roadmap}) | [Leaderboard](${leaderboard})
+
+:earth_africa: Contributions here power open-source security for robotics worldwide.
+
+> _AI bot: Questions? Ping me or join our Discord for instant help!_
+
+            `;
+            if (isPR) {
+              await github.rest.issues.createComment({
+                ...context.issue,
+                body: message
+              });
+            } else {
+              await github.rest.issues.createComment({
+                ...context.issue,
+                body: message
+              });
+            }
+
+      # Optionally, add more steps for onboarding DM, Discord bot pings, or external integrations as needed!
