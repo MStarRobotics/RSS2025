@@ -75,34 +75,11 @@ jobs:
       - name: "Path-based PR Labeler"
         uses: github/auto-label@v2
         with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
           configuration-path: .github/pr-labeler.yml
 
-  suggest_labels:
-    name: "Suggest New/Future Labels"
-    runs-on: ubuntu-latest
-    permissions:
-      issues: write
-      pull-requests: write
-
-    steps:
-      - name: "Suggest relevant AI-driven labels"
-        uses: actions/github-script@v7
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const openAI = require('@openai/openai');
-            const issue = context.payload.issue || context.payload.pull_request;
-            const body = issue.body || '';
-            // Hypothetical AI integration for futuristic label suggestions
-            const aiLabels = await openAI.labels.suggest({ text: body, repo: context.repo });
-            for (const label of aiLabels) {
-              await github.issues.addLabels({
-                ...context.repo,
-                issue_number: issue.number,
-                labels: [label]
-              });
-            }
+  # Removed suggest_labels job because the AI-driven label suggestion with OpenAI is hypothetical and not supported in GitHub Actions natively.
+  # If you want advanced label suggestions, consider using GitHub's own Copilot-powered features or a third-party integration.
 
   label_compliance:
     name: "Label Compliance & Analytics"
@@ -117,6 +94,3 @@ jobs:
         with:
           repo-token: ${{ secrets.GITHUB_TOKEN }}
           config-path: .github/label-actions.yml
-
-# labeler.yml, labels.json, pr-labeler.yml, and label-actions.yml
-# should be defined in .github/ for full functionality.
